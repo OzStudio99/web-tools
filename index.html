@@ -41,8 +41,9 @@ a{ color:var(--cyan); }
 .hero .eyebrow{ font-family:var(--font-m); font-size:0.78rem; letter-spacing:0.14em; color:var(--pink); text-transform:uppercase; margin:0 0 14px; }
 .hero h1{ font-family:var(--font-d); font-weight:700; font-size:clamp(1.9rem,4.2vw,2.9rem); line-height:1.1; margin:0 0 16px; }
 .hero p{ color:var(--text-dim); max-width:58ch; font-size:1.02rem; margin:0; }
-.grid{ display:grid; grid-template-columns:1fr 1fr; gap:22px; max-width:1000px; padding:32px; }
-@media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
+.grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; max-width:1200px; padding:32px; }
+@media (max-width:960px){ .grid{ grid-template-columns:1fr 1fr; } }
+@media (max-width:640px){ .grid{ grid-template-columns:1fr; } }
 .card{
   display:block; text-decoration:none; color:var(--text);
   background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:26px;
@@ -65,7 +66,7 @@ a{ color:var(--cyan); }
 
 <section class="hero">
   <p class="eyebrow">Ücretsiz · Tarayıcı-içi · Kurulum yok</p>
-  <h1>İki konsol, sekiz alet.</h1>
+  <h1>Beş konsol, yirmi dört alet.</h1>
   <p>Hepsi tarayıcında çalışır — hiçbir dosya sunucuya yüklenmez. Aşağıdan birini seç.</p>
 </section>
 
@@ -83,6 +84,30 @@ a{ color:var(--cyan); }
     <h2>OZ//MEDIABOX</h2>
     <p>PDF ve resim araçları.</p>
     <div class="list">U1 PDF Birleştir<br>U2 PDF Sayfa Ayıkla<br>U3 PDF → Resim<br>U4 Resim Sıkıştır & Dönüştür</div>
+    <span class="go">Aç →</span>
+  </a>
+
+  <a class="card" href="utils/">
+    <span class="tag">KONSOL 03</span>
+    <h2>OZ//UTILS</h2>
+    <p>Çevirici, üretici, hesaplayıcı.</p>
+    <div class="list">U1 Birim Çevirici<br>U2 Saat Dilimi Çevirici<br>U3 Şifre Üretici<br>U4 QR Kod Üretici<br>U5 VKİ Hesaplayıcı<br>U6 Kredi Taksit Hesaplayıcı</div>
+    <span class="go">Aç →</span>
+  </a>
+
+  <a class="card" href="archive/">
+    <span class="tag">KONSOL 04</span>
+    <h2>OZ//ARCHIVE</h2>
+    <p>Arşiv ve dosya araçları.</p>
+    <div class="list">U1 ZIP Oluştur<br>U2 ZIP Aç<br>U3 Favicon Üretici<br>U4 EXIF Görüntüleyici & Temizleyici</div>
+    <span class="go">Aç →</span>
+  </a>
+
+  <a class="card" href="studio/">
+    <span class="tag">KONSOL 05</span>
+    <h2>OZ//STUDIO</h2>
+    <p>Video ve ses araçları.</p>
+    <div class="list">U1 Videodan Ses<br>U2 Video Sıkıştır<br>U3 Video Kırp<br>U4 Videodan GIF<br>U5 Ses Format Çevir<br>U6 Video Kapak Resmi</div>
     <span class="go">Aç →</span>
   </a>
 </div>
