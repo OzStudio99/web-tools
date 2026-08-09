@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ücretsiz ZIP Oluşturucu, ZIP Açıcı, Favicon ve EXIF Temizleyici — OZ//ARCHIVE</title>
+<meta name="description" content="ZIP dosyası oluştur, ZIP aç, favicon üret, fotoğraftaki EXIF/konum bilgisini gör ve temizle. Kurulum yok, üyelik yok — tamamen tarayıcında çalışır.">
+<meta name="keywords" content="zip oluşturucu, zip açıcı online, dosya sıkıştırma ücretsiz, favicon üretici, favicon generator, exif görüntüleyici, exif temizleyici, fotoğraf konum bilgisi silme">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ozstudio99.github.io/web-tools/archive/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="OZ//ARCHIVE">
+<meta property="og:title" content="Ücretsiz ZIP, Favicon ve EXIF Araçları — OZ//ARCHIVE">
+<meta property="og:description" content="ZIP oluştur, ZIP aç, favicon üret, EXIF/konum bilgisini gör ve temizle — hepsi tarayıcında çalışır.">
+<meta property="og:url" content="https://ozstudio99.github.io/web-tools/archive/">
+<meta property="og:locale" content="tr_TR">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ücretsiz ZIP, Favicon ve EXIF Araçları — OZ//ARCHIVE">
+<meta name="twitter:description" content="Dört dosya aracı tek sayfada, tamamen tarayıcında çalışır.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "OZ//ARCHIVE",
+  "url": "https://ozstudio99.github.io/web-tools/archive/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (tarayıcı üzerinden çalışır)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TRY" },
+  "description": "ZIP oluşturma, ZIP açma, favicon üretimi ve EXIF görüntüleme/temizleme araçlarını içeren ücretsiz araç seti.",
+  "featureList": ["ZIP dosyası oluşturma", "ZIP dosyası açma", "Favicon üretme", "EXIF verisi görüntüleme ve temizleme"]
+}
+</script>
+<style>
+:root{
+  --bg:#0A0D12; --bg-2:#10141B; --panel:#131822; --line:#262E3B; --line-soft:#1B212C;
+  --text:#E9ECF3; --text-dim:#7C879C; --cyan:#4CE8C9; --pink:#FF5C8A; --amber:#FFB454; --red:#FF6B5E; --violet:#B39DFF;
+  --font-d:'Space Grotesk',sans-serif; --font-m:'JetBrains Mono',ui-monospace,monospace;
+}
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(179,157,255,0.07), transparent 45%),
+    radial-gradient(circle at 90% 15%, rgba(76,232,201,0.05), transparent 40%),
+    var(--bg);
+  color:var(--text); font-family:var(--font-d); min-height:100vh; position:relative;
+}
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:50;
+  background:repeating-linear-gradient(to bottom, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 3px);
+  mix-blend-mode:overlay;
+}
+@media (prefers-reduced-motion: reduce){ *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; } }
+a{ color:var(--violet); }
+button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible{ outline:2px solid var(--violet); outline-offset:2px; }
+
+.site-header{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding:22px 32px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+.brand{ display:flex; align-items:center; gap:12px; }
+.brand .led{ width:10px; height:10px; border-radius:50%; background:var(--violet); box-shadow:0 0 8px 2px rgba(179,157,255,0.7); animation:pulse 2.4s ease-in-out infinite; }
+@keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
+.brand-text{ font-family:var(--font-m); font-weight:700; letter-spacing:0.02em; font-size:1.05rem; }
+.brand-text small{ color:var(--text-dim); font-weight:400; }
+.status-line{ font-family:var(--font-m); font-size:0.78rem; color:var(--text-dim); }
+
+.boot{ font-family:var(--font-m); font-size:0.78rem; color:var(--text-dim); padding:10px 32px; overflow:hidden; white-space:nowrap; border-bottom:1px dashed var(--line-soft); animation:reveal 1.1s steps(40,end) 0.1s both; max-width:640px; }
+@keyframes reveal{ from{ max-width:0; } to{ max-width:640px; } }
+
+.hero{ padding:48px 32px 8px; max-width:900px; }
+.hero .eyebrow{ font-family:var(--font-m); font-size:0.78rem; letter-spacing:0.14em; color:var(--pink); text-transform:uppercase; margin:0 0 14px; }
+.hero h1{ font-family:var(--font-d); font-weight:700; font-size:clamp(1.9rem,4.2vw,2.9rem); line-height:1.1; margin:0 0 16px; letter-spacing:-0.01em; }
+.hero h1 .accent{ color:var(--violet); }
+.hero p{ color:var(--text-dim); max-width:58ch; font-size:1.02rem; margin:0; }
+
+.deck{ display:flex; gap:10px; flex-wrap:wrap; padding:28px 32px 0; max-width:1100px; }
+.deck button{ all:unset; cursor:pointer; display:flex; align-items:center; gap:10px; font-family:var(--font-m); font-size:0.82rem; letter-spacing:0.03em; color:var(--text-dim); background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:11px 16px; transition:border-color .15s ease, color .15s ease, transform .1s ease, box-shadow .15s ease; }
+.deck button .dot{ width:8px; height:8px; border-radius:50%; background:var(--line); flex:none; transition:background .15s ease, box-shadow .15s ease; }
+.deck button:hover{ color:var(--text); transform:translateY(-1px); }
+.deck button[aria-selected="true"]{ color:var(--text); border-color:var(--violet); box-shadow:0 0 0 1px rgba(179,157,255,0.25), 0 0 18px -6px rgba(179,157,255,0.5); }
+.deck button[aria-selected="true"] .dot{ background:var(--violet); box-shadow:0 0 6px 1px rgba(179,157,255,0.9); }
+.deck button .tag{ color:var(--amber); font-weight:600; }
+
+main{ padding:28px 32px 60px; max-width:1100px; }
+.panel{ display:none; }
+.panel.active{ display:block; animation:fade .25s ease both; }
+@keyframes fade{ from{ opacity:0; transform:translateY(4px); } to{ opacity:1; transform:none; } }
+.panel-head{ margin-bottom:18px; }
+.panel-head .tag{ font-family:var(--font-m); font-size:0.8rem; color:var(--pink); letter-spacing:0.08em; }
+.panel-head h2{ font-family:var(--font-d); font-size:1.5rem; margin:6px 0 8px; }
+.panel-head p{ color:var(--text-dim); margin:0; max-width:64ch; font-size:0.95rem; }
+
+.dropzone{ display:block; width:100%; border:1.5px dashed var(--line); border-radius:10px; background:var(--panel); padding:28px; text-align:center; cursor:pointer; transition:border-color .15s ease, background .15s ease; }
+.dropzone:hover, .dropzone.drag{ border-color:var(--violet); background:var(--bg-2); }
+.dropzone input[type="file"]{ display:none; }
+.dropzone .hint{ font-family:var(--font-m); font-size:0.8rem; color:var(--text-dim); margin-top:6px; }
+.dropzone .big{ font-family:var(--font-d); font-weight:600; font-size:1.05rem; }
+
+.filelist{ list-style:none; margin:16px 0 0; padding:0; display:flex; flex-direction:column; gap:8px; }
+.filelist li{ display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:9px 12px; font-family:var(--font-m); font-size:0.82rem; }
+.filelist li .name{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.filelist li .ops{ display:flex; gap:6px; flex:none; }
+.filelist li button{ all:unset; cursor:pointer; color:var(--text-dim); font-size:0.85rem; padding:2px 6px; border-radius:4px; }
+.filelist li button:hover{ color:var(--text); background:var(--bg-2); }
+.filelist li a{ font-family:var(--font-m); font-size:0.78rem; text-decoration:none; color:var(--violet); border:1px solid var(--line); border-radius:5px; padding:4px 10px; }
+.filelist li a:hover{ border-color:var(--violet); }
+.filelist li .size{ color:var(--text-dim); font-size:0.76rem; }
+
+.row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:16px; }
+button.action{ all:unset; cursor:pointer; font-family:var(--font-m); font-size:0.82rem; letter-spacing:0.02em; padding:10px 18px; border-radius:6px; background:var(--violet); color:#160F2E; font-weight:600; transition:filter .12s ease, transform .08s ease; }
+button.action:hover{ filter:brightness(1.1); }
+button.action:active{ transform:translateY(1px); }
+button.action.secondary{ background:transparent; color:var(--text); border:1px solid var(--line); font-weight:400; }
+button.action.secondary:hover{ border-color:var(--violet); color:var(--violet); }
+button.action:disabled{ opacity:0.4; cursor:not-allowed; }
+
+.result{ font-family:var(--font-m); font-size:0.8rem; padding:10px 14px; border-radius:6px; margin-top:14px; display:none; border:1px solid transparent; }
+.result.show{ display:block; }
+.result.ok{ background:rgba(76,232,201,0.08); color:var(--cyan); border-color:rgba(76,232,201,0.3); }
+.result.err{ background:rgba(255,107,94,0.08); color:var(--red); border-color:rgba(255,107,94,0.3); }
+.result.info{ background:rgba(255,180,84,0.08); color:var(--amber); border-color:rgba(255,180,84,0.3); }
+
+.grid-icons{ display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:14px; margin-top:20px; }
+.icon-card{ background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px; text-align:center; }
+.icon-card img{ width:48px; height:48px; border-radius:6px; display:block; margin:0 auto 8px; background:#fff; }
+.icon-card .lbl{ font-family:var(--font-m); font-size:0.72rem; color:var(--text-dim); margin-bottom:8px; }
+
+.exif-table{ width:100%; border-collapse:collapse; margin-top:16px; font-family:var(--font-m); font-size:0.82rem; }
+.exif-table tr{ border-bottom:1px solid var(--line-soft); }
+.exif-table td{ padding:8px 4px; vertical-align:top; }
+.exif-table td:first-child{ color:var(--text-dim); width:40%; }
+.exif-preview{ max-width:100%; border-radius:8px; margin-top:16px; border:1px solid var(--line); }
+
+.disclaimer{ font-family:var(--font-m); font-size:0.75rem; color:var(--text-dim); margin-top:14px; }
+
+.info-block{ margin-top:32px; padding-top:24px; border-top:1px dashed var(--line-soft); max-width:72ch; }
+.info-block h3{ font-family:var(--font-d); font-size:1.02rem; margin:18px 0 8px; color:var(--text); }
+.info-block h3:first-child{ margin-top:0; }
+.info-block p{ color:var(--text-dim); font-size:0.92rem; line-height:1.6; margin:0 0 4px; }
+.info-block strong{ color:var(--text); }
+
+.site-footer{ padding:24px 32px 40px; border-top:1px solid var(--line); font-family:var(--font-m); font-size:0.76rem; color:var(--text-dim); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; max-width:1100px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand"><span class="led"></span><span class="brand-text">OZ<small>//</small>ARCHIVE</span></div>
+  <div class="status-line">4 modül aktif · dosyalar sunucuya gitmiyor</div>
+</header>
+
+<div class="boot">&gt; oturum başlatıldı — tarayıcı-içi arşiv modu — hazır_</div>
+
+<section class="hero">
+  <p class="eyebrow">Tek sayfa · dört alet</p>
+  <h1>ZIP'le, aç,<br><span class="accent">temizle.</span></h1>
+  <p>Dosya sıkıştırma, favicon üretimi ve gizli fotoğraf verisi temizliği — hepsi tarayıcında, hiçbir dosya sunucuya gitmeden.</p>
+</section>
+
+<nav class="deck" role="tablist" aria-label="Araç seçimi">
+  <button role="tab" aria-selected="true" data-target="panel-zc"><span class="dot"></span><span class="tag">U1</span> ZIP OLUŞTUR</button>
+  <button role="tab" aria-selected="false" data-target="panel-zx"><span class="dot"></span><span class="tag">U2</span> ZIP AÇ</button>
+  <button role="tab" aria-selected="false" data-target="panel-fav"><span class="dot"></span><span class="tag">U3</span> FAVICON</button>
+  <button role="tab" aria-selected="false" data-target="panel-exif"><span class="dot"></span><span class="tag">U4</span> EXIF</button>
+</nav>
+
+<main>
+
+  <!-- ===================== U1 ZIP CREATE ===================== -->
+  <section class="panel active" id="panel-zc">
+    <div class="panel-head">
+      <p class="tag">U1 — ZIP OLUŞTUR</p>
+      <h2>Dosyaları tek ZIP'te topla</h2>
+      <p>Birden fazla dosyayı seç, hepsini tek bir .zip dosyası olarak indir.</p>
+    </div>
+
+    <label class="dropzone" for="zc_input">
+      <div class="big">Dosyaları buraya sürükle ya da seçmek için tıkla</div>
+      <div class="hint">Birden fazla dosya seçebilirsin</div>
+      <input type="file" id="zc_input" multiple>
+    </label>
+
+    <ul class="filelist" id="zc_list"></ul>
+
+    <div class="row">
+      <button class="action" id="zc_run" disabled>ZIP Oluştur ve İndir</button>
+      <button class="action secondary" id="zc_clear">Temizle</button>
+    </div>
+    <div class="result" id="zc_status"></div>
+
+    <div class="info-block">
+      <h3>ZIP oluşturma ne işe yarar?</h3>
+      <p>Birden fazla dosyayı e-posta ile göndermek ya da paylaşmak istediğinizde, tek tek yerine hepsini tek bir sıkıştırılmış dosyada toplamak hem daha düzenli hem daha az yer kaplar.</p>
+      <h3>Nasıl kullanılır?</h3>
+      <p>Sıkıştırmak istediğiniz dosyaları yükleyin, <strong>ZIP Oluştur ve İndir</strong>'e basın. Dosyalar bilgisayarınızdan hiçbir yere yüklenmeden, doğrudan tarayıcınızda paketlenir.</p>
+    </div>
+  </section>
+
+  <!-- ===================== U2 ZIP EXTRACT ===================== -->
+  <section class="panel" id="panel-zx">
+    <div class="panel-head">
+      <p class="tag">U2 — ZIP AÇ</p>
+      <h2>Bir ZIP'in içindekileri gör ve indir</h2>
+      <p>ZIP dosyasını yükle, içeriğini listele, istediğin dosyayı tek tek indir.</p>
+    </div>
+
+    <label class="dropzone" for="zx_input">
+      <div class="big">ZIP dosyasını buraya sürükle ya da seçmek için tıkla</div>
+      <div class="hint">Tek .zip dosyası</div>
+      <input type="file" id="zx_input" accept=".zip,application/zip">
+    </label>
+
+    <div class="result" id="zx_status"></div>
+    <ul class="filelist" id="zx_list"></ul>
+
+    <div class="info-block">
+      <h3>ZIP açma ne işe yarar?</h3>
+      <p>Elinize geçen bir ZIP arşivinin içinde ne olduğunu görmek, hepsini indirmeden sadece ihtiyacınız olan tek bir dosyayı çıkarmak istediğinizde kullanışlıdır.</p>
+      <h3>Nasıl kullanılır?</h3>
+      <p>ZIP dosyasını yükleyin, içindeki dosyalar listelenir. İstediğiniz dosyanın yanındaki <strong>İndir</strong>'e basarak sadece onu kaydedin.</p>
+    </div>
+  </section>
+
+  <!-- ===================== U3 FAVICON GENERATOR ===================== -->
+  <section class="panel" id="panel-fav">
+    <div class="panel-head">
+      <p class="tag">U3 — FAVICON ÜRETİCİ</p>
+      <h2>Bir resimden tüm site ikonu boyutlarını üret</h2>
+      <p>Kare bir logo/resim yükle, standart favicon boyutlarının hepsini tek ZIP'te indir.</p>
+    </div>
+
+    <label class="dropzone" for="fav_input">
+      <div class="big">Resmi buraya sürükle ya da seçmek için tıkla</div>
+      <div class="hint">Kare (1:1) resimler en iyi sonucu verir</div>
+      <input type="file" id="fav_input" accept="image/*">
+    </label>
+
+    <div class="result" id="fav_status"></div>
+    <div class="grid-icons" id="fav_grid"></div>
+
+    <div class="row">
+      <button class="action" id="fav_dl" style="display:none;">Hepsini ZIP Olarak İndir</button>
+    </div>
+
+    <div class="info-block">
+      <h3>Favicon üretici ne işe yarar?</h3>
+      <p>Bir web sitesi ya da uygulama için sekme ikonu, ana ekran ikonu gibi farklı boyutlarda dosyalar hazırlamak elle uğraştırıcıdır. Bu araç tek bir resimden 16×16'dan 512×512'ye kadar tüm standart boyutları otomatik üretir.</p>
+      <h3>Nasıl kullanılır?</h3>
+      <p>Kare bir logo/resim yükleyin, tüm boyutlar otomatik oluşturulur. <strong>Hepsini ZIP Olarak İndir</strong>'e basıp dosyaları projenize ekleyin.</p>
+    </div>
+  </section>
+
+  <!-- ===================== U4 EXIF VIEWER/CLEANER ===================== -->
+  <section class="panel" id="panel-exif">
+    <div class="panel-head">
+      <p class="tag">U4 — EXIF GÖRÜNTÜLEYİCİ & TEMİZLEYİCİ</p>
+      <h2>Fotoğrafın gizli verisini gör, istersen sil</h2>
+      <p>Telefon fotoğrafları genelde çekim konumu, tarih ve cihaz bilgisini içinde saklar. Paylaşmadan önce görün ve isterseniz temizleyin.</p>
+    </div>
+
+    <label class="dropzone" for="exif_input">
+      <div class="big">Fotoğrafı buraya sürükle ya da seçmek için tıkla</div>
+      <div class="hint">JPG dosyalarında EXIF verisi bulunur</div>
+      <input type="file" id="exif_input" accept="image/jpeg">
+    </label>
+
+    <div class="result" id="exif_status"></div>
+    <table class="exif-table" id="exif_table" style="display:none;"></table>
+    <img id="exif_preview" class="exif-preview" style="display:none;">
+
+    <div class="row">
+      <button class="action" id="exif_clean" style="display:none;">Temizlenmiş Fotoğrafı İndir</button>
+    </div>
+    <div class="disclaimer">Temizleme işlemi görseli yeniden çizerek EXIF meta verisini kaldırır; görsel kalitesi korunur.</div>
+
+    <div class="info-block">
+      <h3>EXIF görüntüleyici & temizleyici ne işe yarar?</h3>
+      <p>Bir fotoğrafı internete yüklediğinizde, dosyanın içinde çekildiği GPS konumu, telefon modeli ve çekim tarihi gibi bilgiler saklı olabilir. Bu bilgiler gizlilik açısından risk oluşturabilir; bu araç önce ne içerdiğini gösterir, sonra isterseniz temizler.</p>
+      <h3>Nasıl kullanılır?</h3>
+      <p>JPG fotoğrafı yükleyin, bulunan EXIF verileri tabloda listelenir. <strong>Temizlenmiş Fotoğrafı İndir</strong>'e basarak meta verisi olmayan bir kopyasını kaydedin.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <span>OZ STUDIO</span>
+  <span>Tüm işlemler tarayıcında çalışır — hiçbir dosya sunucuya yüklenmez.</span>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.js"></script>
+<script>
+const tabs = document.querySelectorAll('.deck button');
+tabs.forEach(btn => {
+  btn.addEventListener('click', () => {
+    tabs.forEach(b => b.setAttribute('aria-selected','false'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    btn.setAttribute('aria-selected','true');
+    document.getElementById(btn.dataset.target).classList.add('active');
+  });
+});
+
+function fmtBytes(n){
+  if(n < 1024) return n + ' B';
+  if(n < 1024*1024) return (n/1024).toFixed(1) + ' KB';
+  return (n/(1024*1024)).toFixed(2) + ' MB';
+}
+function setupDropzone(zoneEl, inputEl, onFiles){
+  zoneEl.addEventListener('dragover', e => { e.preventDefault(); zoneEl.classList.add('drag'); });
+  zoneEl.addEventListener('dragleave', () => zoneEl.classList.remove('drag'));
+  zoneEl.addEventListener('drop', e => { e.preventDefault(); zoneEl.classList.remove('drag'); if(e.dataTransfer.files.length) onFiles(e.dataTransfer.files); });
+  inputEl.addEventListener('change', () => { if(inputEl.files.length) onFiles(inputEl.files); });
+}
+function triggerDownload(blob, filename){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
+
+/* ================= U1 ZIP CREATE ================= */
+(function(){
+  const zone = document.querySelector('label[for="zc_input"]');
+  const input = document.getElementById('zc_input');
+  const listEl = document.getElementById('zc_list');
+  const runBtn = document.getElementById('zc_run');
+  const status = document.getElementById('zc_status');
+  let files = [];
+
+  function render(){
+    listEl.innerHTML = '';
+    files.forEach((f, i) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="name">${f.name}</span><span class="size">${fmtBytes(f.size)}</span>`;
+      const ops = document.createElement('span'); ops.className = 'ops';
+ 
