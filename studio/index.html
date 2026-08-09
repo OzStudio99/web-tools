@@ -399,8 +399,7 @@ button.action:disabled{ opacity:0.4; cursor:not-allowed; }
   <span>Tüm işlemler tarayıcında çalışır — hiçbir dosya sunucuya yüklenmez.</span>
 </footer>
 
-<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
-<script src="https://unpkg.com/@ffmpeg/util@0.12.2/dist/umd/index.js"></script>
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.min.js"></script>
 <script>
 const tabs = document.querySelectorAll('.deck button');
 tabs.forEach(btn => {
@@ -431,17 +430,25 @@ let ffmpegInstance = null;
 let ffmpegLoadingPromise = null;
 const engineNote = document.getElementById('engine_note');
 
+function toBlobURL(url, mimeType){
+  return fetch(url)
+    .then(resp => resp.blob())
+    .then(blob => URL.createObjectURL(new Blob([blob], { type: mimeType })));
+}
+
 function getFFmpeg(onProgress){
   if(ffmpegInstance) return Promise.resolve(ffmpegInstance);
   if(ffmpegLoadingPromise) return ffmpegLoadingPromise;
 
   engineNote.classList.add('show');
   ffmpegLoadingPromise = (async () => {
+    if(typeof FFmpegWASM === 'undefined'){
+      throw new Error('İşleme motoru yüklenemedi. İnternet bağlantını kontrol edip sayfayı yenile.');
+    }
     const { FFmpeg } = FFmpegWASM;
-    const { toBlobURL } = FFmpegUtil;
     const instance = new FFmpeg();
     if(onProgress) instance.on('progress', ({ progress }) => onProgress(Math.min(100, Math.round(progress*100))));
-    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
+    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.3/dist/umd';
     await instance.load({
       coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
       wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
