@@ -293,8 +293,8 @@ button.action:disabled{ opacity:0.4; cursor:not-allowed; }
   <span>Tüm işlemler tarayıcında çalışır — hiçbir dosya sunucuya yüklenmez.</span>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.js" defer></script>
 <script>
 const tabs = document.querySelectorAll('.deck button');
 tabs.forEach(btn => {
@@ -339,5 +339,4 @@ function triggerDownload(blob, filename){
     files.forEach((f, i) => {
       const li = document.createElement('li');
       li.innerHTML = `<span class="name">${f.name}</span><span class="size">${fmtBytes(f.size)}</span>`;
-      const ops = document.createElement('span'); ops.className = 'ops';
- 
+      const ops = document.createElement('span'); ops.classNam
